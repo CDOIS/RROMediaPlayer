@@ -15,6 +15,7 @@
         <CommandBinding Command="MediaCommands.Stop" CanExecute="Stop_CanExecute" Executed="Stop_Executed" />
     </Window.CommandBindings>
     <Grid Background="{x:Null}">
+        
         <materialDesign:Card Margin="10" UniformCornerRadius="20" Background="{x:Null}" MouseDown="Card_MouseDown">
             <StackPanel>
                 <StackPanel.Background>
@@ -48,7 +49,10 @@
                     <TextBlock FontSize="11" Text="0:00" Margin="20 0" Foreground="White" FontWeight="ExtraLight" 
                                TextAlignment="Center" HorizontalAlignment="Right"  x:Name="labelMusicLength"/>
                 </Grid>
-                <Slider Value="0" Minimum="1" Maximum="50" Margin="20 0" Foreground="#ff731101" x:Name="timerSlider"/>
+                <MediaElement Name="mePlayer" LoadedBehavior="Manual" Stretch="None"/>
+                <Slider Value="0" Minimum="1" Maximum="50" Margin="20 0" Foreground="#ff731101" x:Name="timerSlider" 
+                        Thumb.DragStarted="sliProgress_DragStarted" Thumb.DragCompleted="sliProgress_DragCompleted"
+                        ValueChanged="sliProgress_ValueChanged" />
                 <WrapPanel HorizontalAlignment="Center" Margin="0 30">
                     <!--<Button Style="{StaticResource CActionButtons}" HorizontalAlignment="Right" Margin="10 0" 
                             ToolTip="Rewind" x:Name="btnRewind">
@@ -84,6 +88,8 @@
                         </StackPanel>
                     </Button>
                 </WrapPanel>
+                <ProgressBar Value="{Binding ElementName=mePlayer, Path=Volume}" Maximum="1" Width ="100" Height="7" Margin="20 0" Foreground="#ff731101" 
+                             x:Name="soundVolume"/>
             </StackPanel>            
         </materialDesign:Card>
     </Grid>
