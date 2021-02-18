@@ -96,8 +96,7 @@ namespace RROMediaPlayer
                         labelSongName.Text = (file.Tag.Title + "; " + file.Tag.FirstPerformer);
                         labelSongAtt.Text = (file.Tag.Album + "; " + file.Tag.Year);
                     }
-
-                    
+                    btnTagEdit.IsEnabled = true;                    
                 }
             }
             catch (Exception ex) {
@@ -192,5 +191,7 @@ namespace RROMediaPlayer
             }
 
         }
+
+
     }
 }

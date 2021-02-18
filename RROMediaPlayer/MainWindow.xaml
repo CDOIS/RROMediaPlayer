@@ -36,7 +36,7 @@
                     <!--Custom Controller Start-(Button)- Tag Editor-->
                     <!--Should Open a new window with Tag info for change and have a submit button to save changes
                     and update SongName label-->
-                    <Button
+                    <Button IsEnabled="False"
                         Style="{StaticResource CActionButtons}" HorizontalAlignment="Left" Margin="60 0" ToolTip="Edit Tag" x:Name="btnTagEdit" Click="btnTagEdit_Click">
                         <StackPanel Margin="-5">
                             <materialDesign:PackIcon Kind="Tag" Width="20" Height="20" />
@@ -114,16 +114,17 @@
             </StackPanel.Background>
             <Grid>
                 <Label Content="Tag Editor" FontStyle="Normal" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White" Margin="108,31,108,-31" />
-                <Label Content="Song Title" FontStyle="Italic" Foreground="White" Margin="0,77,0,-77" />
+                <local:labelText Content="Title" Foreground="White" Margin="0,77,0,-77" />
                 <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,95,0,-77"
                          Text=" " x:Name="eTitleTag"/>
-                <Label Content="Artist" FontStyle="Italic" Foreground="White" Margin="0,112,0,-112"/>
+                <local:labelText Content="Artist" Foreground="White" Margin="0,117,0,-117" />
                 <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,130,0,-112"
                          Text=" " x:Name="eArtistTag" />
-                <Label Content="Album" FontStyle="Italic" Foreground="White" Margin="0,147,0,-147"/>
+                <local:labelText Content="Album" Foreground="White" Margin="0,152,0,-152" />
                 <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,165,0,-147"
                          Text=" " x:Name="eAlbumTag"/>
-                <Label Content="Year" FontStyle="Italic" Foreground="White" Margin="0,182,0,-182"/>
+                <local:labelText Content="Year" Foreground="White" Margin="0,187,0,-187" />
+
                 <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,200,0,-182"
                          Text=" " x:Name="eYearTag"/>
                 <Button Click="btnSave_Click"
@@ -135,6 +136,7 @@
                 </Button>
 
             </Grid>
+            
         </StackPanel>
     </Grid>
 
