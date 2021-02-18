@@ -4,18 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:MyNamespace="clr-namespace:RROMediaPlayer"
         xmlns:local="clr-namespace:RROMediaPlayer"
         mc:Ignorable="d"
         Title="RRO MediaPlayer" Height="550" Width="300" WindowStartupLocation="CenterScreen" WindowStyle="None" 
         ResizeMode="NoResize" AllowsTransparency="True" Background="{x:Null}">
     <Window.CommandBindings>
+
         <CommandBinding Command="ApplicationCommands.Open" CanExecute="Open_CanExecute" Executed="Open_Executed" />
         <CommandBinding Command="MediaCommands.Play" CanExecute="Play_CanExecute" Executed="Play_Executed" />
         <CommandBinding Command="MediaCommands.Pause" CanExecute="Pause_CanExecute" Executed="Pause_Executed" />
         <CommandBinding Command="MediaCommands.Stop" CanExecute="Stop_CanExecute" Executed="Stop_Executed" />
     </Window.CommandBindings>
     <Grid Background="{x:Null}">
-        
+
         <materialDesign:Card Margin="10" UniformCornerRadius="20" Background="{x:Null}" MouseDown="Card_MouseDown">
             <StackPanel>
                 <StackPanel.Background>
@@ -28,9 +30,19 @@
                     <Button Command="ApplicationCommands.Open"
                         Style="{StaticResource CActionButtons}" HorizontalAlignment="Left" Margin="20 0" ToolTip="Open File" x:Name="btnFile">
                         <StackPanel Margin="-5">
-                            <materialDesign:PackIcon Kind="Folder" Width="20" Height="20" />                            
+                            <materialDesign:PackIcon Kind="Folder" Width="20" Height="20" />
                         </StackPanel>
                     </Button>
+                    <!--Custom Controller Start-(Button)- Tag Editor-->
+                    <!--Should Open a new window with Tag info for change and have a submit button to save changes
+                    and update SongName label-->
+                    <Button
+                        Style="{StaticResource CActionButtons}" HorizontalAlignment="Left" Margin="60 0" ToolTip="Edit Tag" x:Name="btnTagEdit" Click="btnTagEdit_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="Tag" Width="20" Height="20" />
+                        </StackPanel>
+                    </Button>
+                    <!--Custom Controller End-->
                     <Button Style="{StaticResource CActionButtons}" HorizontalAlignment="Right" Margin="20 0" ToolTip="Close" 
                             x:Name="btnClose" Click="btnClose_Click">
                         <StackPanel Margin="-5">
@@ -40,16 +52,16 @@
                 </Grid>
                 <Image Margin="10" Height="200" x:Name="Musicimg" Stretch="Uniform" Source="Images/MusicIcon.jpg"/>
                 <TextBlock Margin="10" FontSize="19" Text="Song name" Foreground="White" TextAlignment="Center" 
-                           FontWeight="SemiBold" x:Name="labelSongName" />
+                           FontWeight="SemiBold" x:Name="labelSongName" TextTrimming="CharacterEllipsis"/>
                 <TextBlock FontSize="11" Text="RRO MP3 Player" Foreground="White" TextAlignment="Center" 
-                           FontWeight="ExtraLight"/>
+                           FontWeight="ExtraLight" x:Name="labelSongAtt" TextTrimming="CharacterEllipsis"/>
                 <Grid Margin="0 30 0 0">
                     <TextBlock FontSize="11" Text="0:00" Margin="20 0" Foreground="White" FontWeight="ExtraLight" 
                                TextAlignment="Center" HorizontalAlignment="Left"  x:Name="labelCurrentTime"/>
                     <TextBlock FontSize="11" Text="0:00" Margin="20 0" Foreground="White" FontWeight="ExtraLight" 
                                TextAlignment="Center" HorizontalAlignment="Right"  x:Name="labelMusicLength"/>
                 </Grid>
-                <MediaElement Name="mePlayer" LoadedBehavior="Manual" Stretch="None"/>
+                <MediaElement Name="mePlayer" LoadedBehavior="Manual" Stretch="None" Visibility="Hidden"/>
                 <Slider Value="0" Minimum="1" Maximum="50" Margin="20 0" Foreground="#ff731101" x:Name="timerSlider" 
                         Thumb.DragStarted="sliProgress_DragStarted" Thumb.DragCompleted="sliProgress_DragCompleted"
                         ValueChanged="sliProgress_ValueChanged" />
@@ -59,7 +71,7 @@
                         <StackPanel Margin="-5">
                             <materialDesign:PackIcon Kind="FastRewind" Width="20"  Height="20"/>
                         </StackPanel>
-                    </Button>-->                    
+                    </Button>-->
                     <Button Command="MediaCommands.Play"
                         Style="{StaticResource CActionButtons}" HorizontalAlignment="Right" Margin="10 0" 
                             ToolTip="Play" x:Name="btnPlay">
@@ -73,7 +85,7 @@
                         <StackPanel Margin="-5">
                             <materialDesign:PackIcon Kind="Pause" Width="20"  Height="20"/>
                         </StackPanel>
-                    </Button>                    
+                    </Button>
                     <!--<Button Style="{StaticResource CActionButtons}" HorizontalAlignment="Right" Margin="10 0" 
                             ToolTip="Play Next" x:Name="btnFFNext">
                         <StackPanel Margin="-5">
@@ -90,7 +102,40 @@
                 </WrapPanel>
                 <ProgressBar Value="{Binding ElementName=mePlayer, Path=Volume}" Maximum="1" Width ="100" Height="7" Margin="20 0" Foreground="#ff731101" 
                              x:Name="soundVolume"/>
-            </StackPanel>            
+            </StackPanel>
         </materialDesign:Card>
+        <StackPanel Visibility="Hidden" Height="272" Margin="10,10,10,0" 
+                    VerticalAlignment="Top" x:Name="editorPanel">
+            <StackPanel.Background>
+                <LinearGradientBrush StartPoint="0.1,0" EndPoint="0.3,1">
+                    <GradientStop Color='DarkGray' Offset="1"/>
+                    <GradientStop Color='Black' Offset="0"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <Grid>
+                <Label Content="Tag Editor" FontStyle="Normal" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White" Margin="108,31,108,-31" />
+                <Label Content="Song Title" FontStyle="Italic" Foreground="White" Margin="0,77,0,-77" />
+                <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,95,0,-77"
+                         Text=" " x:Name="eTitleTag"/>
+                <Label Content="Artist" FontStyle="Italic" Foreground="White" Margin="0,112,0,-112"/>
+                <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,130,0,-112"
+                         Text=" " x:Name="eArtistTag" />
+                <Label Content="Album" FontStyle="Italic" Foreground="White" Margin="0,147,0,-147"/>
+                <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,165,0,-147"
+                         Text=" " x:Name="eAlbumTag"/>
+                <Label Content="Year" FontStyle="Italic" Foreground="White" Margin="0,182,0,-182"/>
+                <TextBox Background="White" Height="23" TextWrapping="Wrap"  Margin="0,200,0,-182"
+                         Text=" " x:Name="eYearTag"/>
+                <Button Click="btnSave_Click"
+                        Style="{StaticResource CActionButtons}" HorizontalAlignment="Left" Margin="120,228,0,-228" ToolTip="Save" 
+                    x:Name="btnSave">
+                    <StackPanel Margin="-5">
+                        <materialDesign:PackIcon Kind="ContentSave" Width="20" Height="20" />
+                    </StackPanel>
+                </Button>
+
+            </Grid>
+        </StackPanel>
     </Grid>
+
 </Window>
